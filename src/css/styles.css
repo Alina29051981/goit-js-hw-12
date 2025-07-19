@@ -16,3 +16,141 @@
 @import url('./badges.css');
 @import url('./back-link.css');
 @import url('./footer.css');
+
+body {
+  background: #fff;
+  padding: 24px;
+  margin: 0;
+  }
+
+input, button {
+  font-family: inherit;
+}
+
+
+* {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-button {
+  border-radius: 8px;
+  border: none;
+  width: 91px;
+  height: 40px;
+  background-color: #4e75ff;
+  color: #fff;
+  font-weight: 500;
+  padding: 8px 16px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+  background-color: #6c8cff;
+}
+
+.loader {
+  display: none;
+  width: 48px;
+  height: 48px;
+  margin: 20px auto;
+  border: 5px solid #ccc;
+  border-top-color: #2e2f42;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loader.visible {
+  display: block;
+}
+
+.form-input {
+  width: 272px;
+  height: 40px;
+  color: #2e2f42;
+  font-weight: 400;
+  border-radius: 4px;
+  border: 1px solid #808080;
+  padding-left: 16px;
+  outline: none;
+  background-color: #fff;
+  
+  transition: border-color 0.3s ease;
+}
+
+.form-input::placeholder {
+  color: #808080;
+  font-weight: 400;
+}
+
+.form-input:hover {
+  border-color: #000;
+}
+
+.form-input:focus {
+  border-color: #4e75ff;
+ }
+
+.loader-message {
+  font-weight: 400;
+  color: #2e2f42;
+}
+
+.gallery {
+  width: 1128px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 32px auto 0;
+  justify-content: center;
+}
+
+.gallery li {
+  flex: 0 0 calc(33.333% - 24px);
+  box-sizing: border-box;
+}
+
+.gallery img {
+  width: 360px;
+  height: 200px;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.info-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 8px;
+}
+
+.info-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+}
+
+.info-block span:first-child {
+  font-weight: bold;
+  font-size: 12px;
+  color: #555;
+}
+
+.info-block span:last-child {
+  font-size: 14px;
+  color: #000;
+}
