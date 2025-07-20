@@ -48,12 +48,13 @@ export function clearGallery() {
 
 export function showLoader() {
   loader.textContent = 'Loading images, please wait...';
-  loader.style.display = 'inline-block';
+  loader.classList.add('is-visible');
 }
 
 export function hideLoader() {
   loader.textContent = '';
-  loader.style.display = 'none';
+  loader.classList.remove('is-visible');
 }
+
 
 
