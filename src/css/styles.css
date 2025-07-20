@@ -27,7 +27,6 @@ input, button {
   font-family: inherit;
 }
 
-
 * {
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
@@ -61,16 +60,12 @@ main {
 
 .loader {
   display: none;
-  width: 48px;
-  height: 48px;
+  text-align: center;
+  font-size: 16px;
+  color: #2e2f42;
   margin: 20px auto;
-  border: 5px solid #ccc;
-  border-top-color: #2e2f42;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
 }
-
-.loader.visible {
+.loader.is-visible {
   display: block;
 }
 

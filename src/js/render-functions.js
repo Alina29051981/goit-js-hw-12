@@ -2,6 +2,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const galleryContainer = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 
 let lightbox = null;
 
@@ -46,24 +47,13 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-  if (!document.querySelector('#loading-message')) {
-    document.body.insertAdjacentHTML('beforeend', `
-      <p id="loading-message" style="
-        text-align: center;
-        font-size: 16px;
-        color: #2e2f42;
-        margin: 20px auto;
-      ">
-        Loading images, please wait...
-      </p>
-    `);
-  }
+  loader.textContent = 'Loading images, please wait...';
+  loader.style.display = 'inline-block';
 }
 
 export function hideLoader() {
-  const message = document.querySelector('#loading-message');
-  if (message) {
-    message.remove();
-  }
+  loader.textContent = '';
+  loader.style.display = 'none';
 }
+
 
