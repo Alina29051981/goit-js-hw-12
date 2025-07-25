@@ -18,10 +18,6 @@ function hideElement(element) {
   element.classList.add('hidden');
 }
 
-/**
- * Перевіряє, чи поточна сторінка досягла або перевищила загальну кількість сторінок.
- * Якщо так, ховає лоадер і кнопку Load more.
- */
 export function checkPageLimits(currentPage, totalPages) {
   if (currentPage >= totalPages) {
     hideElement(loadMoreBtn);
@@ -30,7 +26,7 @@ export function checkPageLimits(currentPage, totalPages) {
       loadMoreMessageElem.remove();
       loadMoreMessageElem = null;
     }
-    return true; // досягнуто кінець
+    return true;
   }
   return false;
 }
