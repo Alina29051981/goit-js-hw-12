@@ -4,26 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
+    <title>Image Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    
     <main>
       <form class="form">
-  <label>
-    <input class="form-input" type="text" name="search-text" placeholder="Search images..." required>
-  </label>
-  <button class="form-button" type="submit">Search</button>
-</form>
+        <label>
+          <input class="form-input" type="text" name="search-text" placeholder="Search images..." required>
+        </label>
+        <button class="form-button" type="submit">Search</button>
+      </form>
 
-<span class="loader"></span>
+      <span class="loader hidden"></span> 
+     
+      <ul class="gallery"></ul>
 
-<ul class="gallery"></ul>
-
+      <button class="load-more hidden">Load more</button> 
     </main>
- 
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>

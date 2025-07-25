@@ -59,12 +59,14 @@ main {
 }
 
 .loader {
+  
   display: none;
   text-align: center;
   font-size: 16px;
   color: #2e2f42;
   margin: 20px auto;
-}
+  margin-top: 32px;
+ }
 .loader.is-visible {
   display: block;
 }
@@ -79,8 +81,7 @@ main {
   padding-left: 16px;
   outline: none;
   background-color: #fff;
-  
-  transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease;
 }
 
 .form-input::placeholder {
@@ -149,3 +150,24 @@ main {
   font-size: 14px;
   color: #000;
 }
+
+.load-more {
+  
+  border-radius: 8px;
+padding: 8px 16px;
+width: 125px;
+height: 40px;
+background-color: #4e75ff;
+   border: none;
+   color: #fff;
+  font-weight: 500;
+    margin-top: 32px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  }
+
+.load-more:hover {
+  background-color: #6c8cff;
+}
+
