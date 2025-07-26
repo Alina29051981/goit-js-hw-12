@@ -82,14 +82,13 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-  if (!loader) return;
   loader.textContent = 'Loading images, please wait...';
-  showElement(loader);
+  loader.classList.add('is-visible');
 }
 
 export function hideLoader() {
-  if (!loader) return;
-  hideElement(loader);
+  loader.textContent = '';
+  loader.classList.remove('is-visible');
 }
 
 export function showLoadMoreButton() {
@@ -106,26 +105,35 @@ export function hideLoadMoreButton() {
   hideElement(loadMoreBtn);
 }
 
+
 export function showLoadMoreLoader() {
   if (!loadMoreBtn) return;
-  hideElement(loadMoreBtn);
+
+  loadMoreBtn.classList.add('hidden'); // сховати кнопку
 
   if (!loadMoreMessageElem) {
     loadMoreMessageElem = document.createElement('div');
-    loadMoreMessageElem.classList.add('load-more-message');
+    loadMoreMessageElem.classList.add('load-more-loader');
     loadMoreMessageElem.textContent = 'Loading images, please wait...';
 
-    if (loadMoreBtn.parentNode) {
-      loadMoreBtn.parentNode.insertBefore(loadMoreMessageElem, loadMoreBtn.nextSibling);
-    }
+    // вставляємо один раз після кнопки
+    loadMoreBtn.parentNode?.insertBefore(loadMoreMessageElem, loadMoreBtn.nextSibling);
   }
+
+  loadMoreMessageElem.classList.remove('hidden'); // показати лоадер
 }
 
 export function hideLoadMoreLoader() {
-  if (loadMoreMessageElem) {
-    loadMoreMessageElem.remove();
-    loadMoreMessageElem = null;
-  }
   if (!loadMoreBtn) return;
-  showElement(loadMoreBtn);
+
+  loadMoreBtn.classList.remove('hidden'); // показати кнопку
+
+  if (loadMoreMessageElem) {
+    loadMoreMessageElem.classList.add('hidden'); // сховати лоадер
+  }
 }
+
+export function showNoResultsMessage() {
+  galleryContainer.innerHTML = '<p class="no-results">No results found.</p>';
+}
+
