@@ -4,7 +4,7 @@ const API_KEY = '51378857-ce26c557409bd50545eef808f';
 const BASE_URL = 'https://pixabay.com/api/';
 const PER_PAGE = 15;
 
-export async function getImagesByQuery(query, page = 1, perPage = 9) {
+export async function getImagesByQuery(query, page = 1, perPage = PER_PAGE) {
   const params = {
     key: API_KEY,
     q: query,
