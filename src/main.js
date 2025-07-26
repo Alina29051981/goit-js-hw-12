@@ -19,7 +19,7 @@ const loadMoreBtn = document.querySelector('.load-more');
 let currentPage = 1;
 let currentQuery = '';
 let totalPages = 0;
-const perPage = 9;
+const perPage = 15;
 
 function hideLoadMoreButton() {
   if (!loadMoreBtn) return;
@@ -30,7 +30,7 @@ function hideLoadMoreButton() {
 function showLoadMoreButton() {
   if (!loadMoreBtn) return;
   loadMoreBtn.classList.remove('hidden');
-  loadMoreBtn.style.display = 'inline-block'; // або 'block' за потреби
+  loadMoreBtn.style.display = 'inline-block';
 }
 
 form.addEventListener('submit', async event => {
@@ -66,12 +66,19 @@ loadMoreBtn.addEventListener('click', async () => {
   hideLoadMoreButton();
   showLoadMoreLoader();
 
-  await fetchAndRenderImages(false);
-
-  hideLoadMoreLoader();
-  loadMoreBtn.disabled = false;
-
-  smoothScroll();
+  try {
+    await fetchAndRenderImages(false);
+    smoothScroll();
+  } catch (error) {
+    iziToast.error({
+      title: 'Error',
+      message: error.message,
+      position: 'topRight',
+    });
+  } finally {
+    hideLoadMoreLoader();
+    loadMoreBtn.disabled = false;
+  }
 });
 
 async function fetchAndRenderImages(isNewSearch = false) {
@@ -84,13 +91,13 @@ async function fetchAndRenderImages(isNewSearch = false) {
       if (isNewSearch) {
         clearGallery();
         showNoResultsMessage();
+      } else {
+        iziToast.info({ message: "No more images found.", position: 'topRight' });
       }
-      iziToast.info({ message: "No more images found.", position: 'topRight' });
       return;
     }
 
     totalPages = Math.ceil(data.totalHits / perPage);
-
     createGallery(data.hits);
 
     if (currentPage < totalPages) {

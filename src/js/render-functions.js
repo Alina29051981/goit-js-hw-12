@@ -79,6 +79,10 @@ export function createGallery(images) {
 export function clearGallery() {
   if (!galleryContainer) return;
   galleryContainer.innerHTML = '';
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
 }
 
 export function showLoader() {
@@ -105,7 +109,6 @@ export function hideLoadMoreButton() {
   hideElement(loadMoreBtn);
 }
 
-
 export function showLoadMoreLoader() {
   if (!loadMoreBtn) return;
 
@@ -116,11 +119,10 @@ export function showLoadMoreLoader() {
     loadMoreMessageElem.classList.add('load-more-loader');
     loadMoreMessageElem.textContent = 'Loading images, please wait...';
 
-    // вставляємо один раз після кнопки
     loadMoreBtn.parentNode?.insertBefore(loadMoreMessageElem, loadMoreBtn.nextSibling);
   }
 
-  loadMoreMessageElem.classList.remove('hidden'); // показати лоадер
+  loadMoreMessageElem.classList.remove('hidden');
 }
 
 export function hideLoadMoreLoader() {
@@ -134,6 +136,8 @@ export function hideLoadMoreLoader() {
 }
 
 export function showNoResultsMessage() {
+  hideLoader(); 
+
+  if (!galleryContainer) return;
   galleryContainer.innerHTML = '<p class="no-results">No results found.</p>';
 }
-
