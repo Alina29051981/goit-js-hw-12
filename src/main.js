@@ -33,6 +33,19 @@ function showLoadMoreButton() {
   loadMoreBtn.style.display = 'inline-block';
 }
 
+input.addEventListener('input', () => {
+  if (input.value.trim() === '') {
+    clearGallery();
+    hideLoadMoreButton();
+    hideLoader();
+
+    const noResults = document.querySelector('.no-results');
+    if (noResults) noResults.remove();
+
+    iziToast.destroy();
+  }
+});
+
 form.addEventListener('submit', async event => {
   event.preventDefault();
 
