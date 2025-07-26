@@ -112,7 +112,7 @@ export function hideLoadMoreButton() {
 export function showLoadMoreLoader() {
   if (!loadMoreBtn) return;
 
-  loadMoreBtn.classList.add('hidden'); // сховати кнопку
+  loadMoreBtn.classList.add('hidden'); 
 
   if (!loadMoreMessageElem) {
     loadMoreMessageElem = document.createElement('div');
@@ -128,10 +128,10 @@ export function showLoadMoreLoader() {
 export function hideLoadMoreLoader() {
   if (!loadMoreBtn) return;
 
-  loadMoreBtn.classList.remove('hidden'); // показати кнопку
+  loadMoreBtn.classList.remove('hidden');
 
   if (loadMoreMessageElem) {
-    loadMoreMessageElem.classList.add('hidden'); // сховати лоадер
+    loadMoreMessageElem.classList.add('hidden');
   }
 }
 
