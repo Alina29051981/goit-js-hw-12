@@ -1,17 +1,14 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-
 const galleryContainer = document.querySelector('.gallery'); 
 const loader = document.querySelector('.loader');          
-const loadMoreBtn = document.querySelector('.load-more');   
-
+const loadMoreBtn = document.querySelector('.load-more'); 
+  
 let lightbox = null;
 
-
 export function createGallery(images) {
-     
-  const markup = images.map(image => `
+       const markup = images.map(image => `
     <li class="gallery-item">
       <a href="${image.largeImageURL}">
         <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy">
@@ -24,18 +21,13 @@ export function createGallery(images) {
       </div>
     </li>
   `).join('');
-
-  
-  galleryContainer.insertAdjacentHTML('beforeend', markup);
-
+    galleryContainer.insertAdjacentHTML('beforeend', markup);
   if (!lightbox) {
     lightbox = new SimpleLightbox('.gallery a');
-
  } else {
     lightbox.refresh();
-    }}
-
-
+    }
+  }
 
 export function clearGallery() {
   if (!galleryContainer) return;
@@ -46,13 +38,11 @@ export function clearGallery() {
   }
 }
 
-
 export function showLoader() {
   if (!loader) return;
   loader.textContent = 'Loading images, please wait...';
   loader.classList.add('is-visible');
 }
-
 
 export function hideLoader() {
   if (!loader) return;
@@ -60,14 +50,10 @@ export function hideLoader() {
   loader.classList.remove('is-visible');
 }
 
-
 export function showLoadMoreButton() {
   if (!loadMoreBtn) return;
   loadMoreBtn.classList.remove('hidden'); 
-
-  
 }
-
 
 export function hideLoadMoreButton() {
  if (!loadMoreBtn) return;

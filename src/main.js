@@ -11,17 +11,14 @@ import {
   hideLoadMoreButton,
 } from './js/render-functions.js';
 
-// DOM-елементи
 const form = document.querySelector('.form');
 const input = form.querySelector('input[name="search-text"]');
 const loadMoreBtn = document.querySelector('.load-more'); 
-
 
 let currentPage = 1;
 let currentQuery = '';
 let totalPages = 0;
 const perPage = 15;
-
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
@@ -77,17 +74,13 @@ form.addEventListener('submit', async event => {
   }
 });
 
-
-
 loadMoreBtn.addEventListener('click', async () => {
-
    currentPage++;
+   
   if (currentPage >= totalPages) {
     hideLoadMoreButton();
     return;
   }
-
- 
 
   hideLoadMoreButton();
   showLoader();
