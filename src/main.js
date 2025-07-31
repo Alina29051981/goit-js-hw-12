@@ -12,17 +12,17 @@ import {
 } from './js/render-functions.js';
 
 // DOM-елементи
-const form = document.querySelector('.form'); // Форма пошуку
-const input = form.querySelector('input[name="search-text"]'); // Поле для пошуку
-const loadMoreBtn = document.querySelector('.load-more'); // Кнопка "Load More"
+const form = document.querySelector('.form');
+const input = form.querySelector('input[name="search-text"]');
+const loadMoreBtn = document.querySelector('.load-more'); 
 
-// Змінні для пагінації та запиту
+
 let currentPage = 1;
 let currentQuery = '';
 let totalPages = 0;
 const perPage = 15;
 
-// Обробник сабміту форми пошуку
+
 form.addEventListener('submit', async event => {
   event.preventDefault();
 
@@ -77,20 +77,33 @@ form.addEventListener('submit', async event => {
   }
 });
 
-// Обробник кліку на кнопку Load More
+
+
 loadMoreBtn.addEventListener('click', async () => {
+
+   currentPage++;
   if (currentPage >= totalPages) {
     hideLoadMoreButton();
     return;
   }
 
-  currentPage++;
+ 
 
   hideLoadMoreButton();
   showLoader();
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
+
+     if (!data.hits || data.hits.length === 0) {
+      hideLoader();
+      hideLoadMoreButton();
+      iziToast.info({
+        message: 'There are no images matching your search query. Please try again!',
+        position: 'topRight',
+      });
+      return;
+    }
 
     createGallery(data.hits);
 
