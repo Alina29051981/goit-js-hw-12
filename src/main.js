@@ -49,7 +49,7 @@ form.addEventListener('submit', async event => {
       clearGallery();
       hideLoadMoreButton();
       iziToast.info({
-        message: 'No results found.',
+        message: 'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
       return;

@@ -5,7 +5,7 @@ const galleryContainer = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');  
 const loadMoreBtn = document.querySelector('.load-more'); 
   
-let lightbox = null;
+let lightbox = new SimpleLightbox('.gallery a');
 
 export function createGallery(images) {
        const markup = images.map(image => `
@@ -22,13 +22,9 @@ export function createGallery(images) {
     </li>
   `).join('');
     galleryContainer.insertAdjacentHTML('beforeend', markup);
-  if (!lightbox) {
-    lightbox = new SimpleLightbox('.gallery a');
- } else {
-    lightbox.refresh();
+      lightbox.refresh();
     }
-  }
-
+  
 export function clearGallery() {
   if (!galleryContainer) return;
   galleryContainer.innerHTML = ''; 
