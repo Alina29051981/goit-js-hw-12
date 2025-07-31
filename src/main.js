@@ -7,49 +7,27 @@ import {
   clearGallery,
   showLoader,
   hideLoader,
-  showLoadMoreLoader,
-  hideLoadMoreLoader,
-  showNoResultsMessage,
+  showLoadMoreButton,
+  hideLoadMoreButton,
 } from './js/render-functions.js';
 
-const form = document.querySelector('.form');
-const input = form.querySelector('input[name="search-text"]');
-const loadMoreBtn = document.querySelector('.load-more');
+// DOM-елементи
+const form = document.querySelector('.form'); // Форма пошуку
+const input = form.querySelector('input[name="search-text"]'); // Поле для пошуку
+const loadMoreBtn = document.querySelector('.load-more'); // Кнопка "Load More"
 
+// Змінні для пагінації та запиту
 let currentPage = 1;
 let currentQuery = '';
 let totalPages = 0;
 const perPage = 15;
 
-function hideLoadMoreButton() {
-  if (!loadMoreBtn) return;
-  loadMoreBtn.classList.add('hidden');
-  loadMoreBtn.style.display = 'none';
-}
-
-function showLoadMoreButton() {
-  if (!loadMoreBtn) return;
-  loadMoreBtn.classList.remove('hidden');
-  loadMoreBtn.style.display = 'inline-block';
-}
-
-input.addEventListener('input', () => {
-  if (input.value.trim() === '') {
-    clearGallery();
-    hideLoadMoreButton();
-    hideLoader();
-
-    const noResults = document.querySelector('.no-results');
-    if (noResults) noResults.remove();
-
-    iziToast.destroy();
-  }
-});
-
+// Обробник сабміту форми пошуку
 form.addEventListener('submit', async event => {
   event.preventDefault();
 
   const query = input.value.trim();
+
   if (!query) {
     iziToast.warning({
       title: 'Warning',
@@ -61,13 +39,45 @@ form.addEventListener('submit', async event => {
 
   currentQuery = query;
   currentPage = 1;
+
   clearGallery();
   hideLoadMoreButton();
   showLoader();
 
-  await fetchAndRenderImages(true);
+  try {
+    const data = await getImagesByQuery(currentQuery, currentPage);
+
+    if (data.hits.length === 0) {
+      hideLoader();
+      clearGallery();
+      hideLoadMoreButton();
+      iziToast.info({
+        message: 'No results found.',
+        position: 'topRight',
+      });
+      return;
+    }
+
+    totalPages = Math.ceil(data.totalHits / perPage);
+    createGallery(data.hits);
+
+    if (data.totalHits > perPage) {
+      showLoadMoreButton();
+    } else {
+      hideLoadMoreButton();
+    }
+  } catch (error) {
+    iziToast.error({
+      title: 'Error',
+      message: error.message,
+      position: 'topRight',
+    });
+  } finally {
+    hideLoader();
+  }
 });
 
+// Обробник кліку на кнопку Load More
 loadMoreBtn.addEventListener('click', async () => {
   if (currentPage >= totalPages) {
     hideLoadMoreButton();
@@ -75,42 +85,13 @@ loadMoreBtn.addEventListener('click', async () => {
   }
 
   currentPage++;
-  loadMoreBtn.disabled = true;
+
   hideLoadMoreButton();
-  showLoadMoreLoader();
+  showLoader();
 
   try {
-    await fetchAndRenderImages(false);
-    smoothScroll();
-  } catch (error) {
-    iziToast.error({
-      title: 'Error',
-      message: error.message,
-      position: 'topRight',
-    });
-  } finally {
-    hideLoadMoreLoader();
-    loadMoreBtn.disabled = false;
-  }
-});
+    const data = await getImagesByQuery(currentQuery, currentPage);
 
-async function fetchAndRenderImages(isNewSearch = false) {
-  try {
-    if (isNewSearch) showLoader();
-
-    const data = await getImagesByQuery(currentQuery, currentPage, perPage);
-
-    if (data.hits.length === 0) {
-      if (isNewSearch) {
-        clearGallery();
-        showNoResultsMessage();
-      } else {
-        iziToast.info({ message: "No more images found.", position: 'topRight' });
-      }
-      return;
-    }
-
-    totalPages = Math.ceil(data.totalHits / perPage);
     createGallery(data.hits);
 
     if (currentPage < totalPages) {
@@ -118,32 +99,32 @@ async function fetchAndRenderImages(isNewSearch = false) {
     } else {
       hideLoadMoreButton();
       iziToast.info({
-        message: "You've reached the end of search results.",
+        message: "We're sorry, but you've reached the end of search results.",
         position: 'topRight',
       });
+      showLoadMoreButton();
     }
+
+    const firstCard = document.querySelector('.gallery-item');
+    if (!firstCard) return;
+
+    const { height: cardHeight } = firstCard.getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
   } catch (error) {
     iziToast.error({
       title: 'Error',
       message: error.message,
       position: 'topRight',
     });
-  } finally {
-    if (isNewSearch) {
-      await new Promise(resolve => setTimeout(resolve, 400));
-      hideLoader();
+
+    if (currentPage < totalPages) {
+      showLoadMoreButton();
     }
+  } finally {
+    hideLoader();
   }
-}
-
-function smoothScroll() {
-  const firstCard = document.querySelector('.gallery-item');
-  if (!firstCard) return;
-
-  const { height: cardHeight } = firstCard.getBoundingClientRect();
-
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-}
+});

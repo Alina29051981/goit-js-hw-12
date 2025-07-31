@@ -1,143 +1,80 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import iziToast from 'izitoast';
+// DOM елементи
+const galleryContainer = document.querySelector('.gallery'); // Контейнер для картинок
+const loader = document.querySelector('.loader');           // Текст лоадера (показує "завантаження")
+const loadMoreBtn = document.querySelector('.load-more');    // Кнопка "Завантажити ще"
 
-const galleryContainer = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
-const loadMoreBtn = document.querySelector('.load-more');
+let lightbox = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionDelay: 250,
+      });
+// Текст біля кнопки "Завантажити ще", коли йде завантаження
 
-let lightbox = null;
-let loadMoreMessageElem = null;
 
-function showElement(element) {
-  if (!element) return;
-  element.classList.remove('hidden');
-}
-
-function hideElement(element) {
-  if (!element) return;
-  element.classList.add('hidden');
-}
-
-export function checkPageLimits(currentPage, totalPages) {
-  if (currentPage >= totalPages) {
-    hideElement(loadMoreBtn);
-    hideElement(loader);
-    if (loadMoreMessageElem) {
-      loadMoreMessageElem.remove();
-      loadMoreMessageElem = null;
-    }
-    return true;
-  }
-  return false;
-}
-
+// ЗАПОВНИТИ галерею картинками
 export function createGallery(images) {
   if (!galleryContainer) return;
 
+  // Для кожної картинки робимо HTML блок з даними
   const markup = images.map(image => `
     <li class="gallery-item">
       <a href="${image.largeImageURL}">
         <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy">
       </a>
       <div class="info-row">
-        <div class="info-block">
-          <span>Likes</span>
-          <span>${image.likes}</span>
-        </div>
-        <div class="info-block">
-          <span>Views</span>
-          <span>${image.views}</span>
-        </div>
-        <div class="info-block">
-          <span>Comments</span>
-          <span>${image.comments}</span>
-        </div>
-        <div class="info-block">
-          <span>Downloads</span>
-          <span>${image.downloads}</span>
-        </div>
+        <div class="info-block"><span>Likes</span><span>${image.likes}</span></div>
+        <div class="info-block"><span>Views</span><span>${image.views}</span></div>
+        <div class="info-block"><span>Comments</span><span>${image.comments}</span></div>
+        <div class="info-block"><span>Downloads</span><span>${image.downloads}</span></div>
       </div>
     </li>
   `).join('');
 
+  // Вставляємо картки в галерею
   galleryContainer.insertAdjacentHTML('beforeend', markup);
 
-  if (!lightbox) {
-    try {
-      lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
-    } catch (error) {
-      console.error('SimpleLightbox initialization failed:', error);
-    }
-  } else {
+
     lightbox.refresh();
   }
-}
 
+
+// ОЧИСТИТИ галерею (прибрати всі картинки)
 export function clearGallery() {
   if (!galleryContainer) return;
-  galleryContainer.innerHTML = '';
+  galleryContainer.innerHTML = ''; // прибрати все з галереї
   if (lightbox) {
-    lightbox.destroy();
+    lightbox.destroy(); // прибрати лайтбокс
     lightbox = null;
   }
 }
 
+// ПОКАЗАТИ великий лоадер (пишемо "завантаження...")
 export function showLoader() {
+  if (!loader) return;
   loader.textContent = 'Loading images, please wait...';
   loader.classList.add('is-visible');
 }
 
+// СХОВАТИ великий лоадер (очистити текст і приховати)
 export function hideLoader() {
+  if (!loader) return;
   loader.textContent = '';
   loader.classList.remove('is-visible');
 }
 
+// ПОКАЗАТИ кнопку "Load More"
 export function showLoadMoreButton() {
   if (!loadMoreBtn) return;
-  showElement(loadMoreBtn);
-  if (loadMoreMessageElem) {
-    loadMoreMessageElem.remove();
-    loadMoreMessageElem = null;
-  }
+  loadMoreBtn.classList.remove('hidden'); 
+
+  // Якщо поруч був лоадер кнопки — видаляємо його
+ 
 }
 
+// СХОВАТИ кнопку "Load More"
 export function hideLoadMoreButton() {
-  if (!loadMoreBtn) return;
-  hideElement(loadMoreBtn);
-}
-
-export function showLoadMoreLoader() {
-  if (!loadMoreBtn) return;
-
+ if (!loadMoreBtn) return;
   loadMoreBtn.classList.add('hidden'); 
-
-  if (!loadMoreMessageElem) {
-    loadMoreMessageElem = document.createElement('div');
-    loadMoreMessageElem.classList.add('load-more-loader');
-    loadMoreMessageElem.textContent = 'Loading images, please wait...';
-
-    loadMoreBtn.parentNode?.insertBefore(loadMoreMessageElem, loadMoreBtn.nextSibling);
-  }
-
-  loadMoreMessageElem.classList.remove('hidden');
-}
-
-export function hideLoadMoreLoader() {
-  if (!loadMoreBtn) return;
-
-  loadMoreBtn.classList.remove('hidden');
-
-  if (loadMoreMessageElem) {
-    loadMoreMessageElem.classList.add('hidden');
-  }
-}
-
-export function showNoResultsMessage() {
-  hideLoader(); 
-
-  if (!galleryContainer) return;
-  galleryContainer.innerHTML = '<p class="no-results">No results found.</p>';
 }
