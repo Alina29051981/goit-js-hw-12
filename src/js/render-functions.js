@@ -2,7 +2,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const galleryContainer = document.querySelector('.gallery'); 
-const loader = document.querySelector('.loader');          
+const loader = document.querySelector('.loader');  
 const loadMoreBtn = document.querySelector('.load-more'); 
   
 let lightbox = null;
@@ -42,13 +42,15 @@ export function showLoader() {
   if (!loader) return;
   loader.textContent = 'Loading images, please wait...';
   loader.classList.add('is-visible');
-}
+  }
 
 export function hideLoader() {
   if (!loader) return;
   loader.textContent = '';
   loader.classList.remove('is-visible');
 }
+  
+ 
 
 export function showLoadMoreButton() {
   if (!loadMoreBtn) return;

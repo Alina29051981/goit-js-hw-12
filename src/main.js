@@ -59,10 +59,10 @@ form.addEventListener('submit', async event => {
     createGallery(data.hits);
 
     if (data.totalHits > perPage) {
-      showLoadMoreButton();
+            showLoadMoreButton();
     } else {
       hideLoadMoreButton();
-    }
+          }
   } catch (error) {
     iziToast.error({
       title: 'Error',
@@ -75,11 +75,11 @@ form.addEventListener('submit', async event => {
 });
 
 loadMoreBtn.addEventListener('click', async () => {
-   currentPage++;
-   
+  console.log('Load More clicked')
+  currentPage++;
+
   if (currentPage >= totalPages) {
     hideLoadMoreButton();
-    return;
   }
 
   hideLoadMoreButton();
@@ -88,7 +88,7 @@ loadMoreBtn.addEventListener('click', async () => {
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
 
-     if (!data.hits || data.hits.length === 0) {
+    if (!data.hits || data.hits.length === 0) {
       hideLoader();
       hideLoadMoreButton();
       iziToast.info({
@@ -108,14 +108,13 @@ loadMoreBtn.addEventListener('click', async () => {
         message: "We're sorry, but you've reached the end of search results.",
         position: 'topRight',
       });
-      showLoadMoreButton();
     }
 
+    // Прокрутка
     const firstCard = document.querySelector('.gallery-item');
     if (!firstCard) return;
 
     const { height: cardHeight } = firstCard.getBoundingClientRect();
-
     window.scrollBy({
       top: cardHeight * 2,
       behavior: 'smooth',
@@ -134,3 +133,4 @@ loadMoreBtn.addEventListener('click', async () => {
     hideLoader();
   }
 });
+
